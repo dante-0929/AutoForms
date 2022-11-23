@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome import service as fs
+from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 import random
@@ -15,12 +17,17 @@ def create_body_temperature():
 
 
 def rite_forms():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    driver.get('https://forms.office.com/r/RpLgRiYr2g')
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    chrome_service = fs.Service(executable_path='/opt/chrome/chromedriver')
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.get(str(config['DEFAULT']['FormsUrl']))
     # クラスを選択
     element = driver.find_element(
         By.XPATH,
-        '//*[@id="form-main-content"]/div/div[1]/div[2]/div[2]/div[1]/div/div[3]/div/div[3]/div/label/div/input'
+        str(config['DEFAULT']['Class_Element'])
     )
     element.click()
 
@@ -29,7 +36,7 @@ def rite_forms():
         By.XPATH,
         '//*[@id="form-main-content"]/div/div[1]/div[2]/div[2]/div[2]/div/div[3]/div/div/input'
     )
-    element.send_keys('小松蒼大')
+    element.send_keys(str(config['DEFAULT']['Name']))
 
     # 体温を入力
     element = driver.find_element(
