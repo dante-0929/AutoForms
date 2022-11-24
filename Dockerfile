@@ -1,15 +1,6 @@
 ##### building stage #####
 FROM python:3.11 as builder
 
-RUN apt-get update && apt-get install -y \
-    unzip
-
-# chrome driver
-ADD https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_linux64.zip /opt/chrome/
-RUN cd /opt/chrome/ && \
-    unzip chromedriver_linux64.zip && \
-    rm -f chromedriver_linux64.zip
-
 # python package
 RUN pip install --upgrade pip
 COPY requirements.txt .
