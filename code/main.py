@@ -67,9 +67,9 @@ def main():
     # note:エレメントが取得できない場合再度実行するとエラーがなくなるため、NoSuchElementが発生したら再度トライする
     while error_count > 0:
         try:
-            error_count = 0
             rite_forms()
-        except NoSuchElementException:
+            error_count = 0
+        except:
             error_count += 1
             print(error_count)
         finally:
